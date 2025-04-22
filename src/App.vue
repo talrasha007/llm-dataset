@@ -54,6 +54,8 @@ const items = ref<MenuProps['items']>([
         bbb
       </LayoutContent>
     </Layout>
+    <RouterView />
+
   </ConfigProvider>
 </template>
 
