@@ -2,9 +2,30 @@
 import { ref, h } from 'vue'
 import type { MenuProps } from 'ant-design-vue';
 import { Layout, Row, Col, LayoutHeader, LayoutContent, Menu, ConfigProvider } from 'ant-design-vue'
-import { ApartmentOutlined, DatabaseOutlined } from '@ant-design/icons-vue'
+import { FileAddOutlined, ApartmentOutlined, DatabaseOutlined } from '@ant-design/icons-vue'
 
 const items = ref<MenuProps['items']>([
+  {
+    key: 'add_dataset',
+    icon: () => h(FileAddOutlined),
+    label: h('a', { href: '#/add_dataset' }, 'ADD DATASET'),
+    disabled: true,
+  },
+  {
+    key: 'dataset',
+    icon: () => h(ApartmentOutlined),
+    label: 'DATASET',
+    children: [
+      {
+        key: 'dataset',
+        label: h('a', { href: '#/dataset' }, 'DATASET'),
+      },
+      {
+        key: 'dataset/table',
+        label: h('a', { href: '#/dataset/table' }, 'TABLE'),
+      },
+    ],
+  },
   {
     key: 'sync',
     icon: () => h(DatabaseOutlined),
@@ -21,6 +42,7 @@ const items = ref<MenuProps['items']>([
           <Col flex="none"><img src="/favicon.svg" class="logo" /></Col>
           <Col flex="none">
             <Menu
+              :selectedKeys="[]"
               :items="items"
               mode="horizontal"
               theme="dark"
