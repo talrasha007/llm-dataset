@@ -37,3 +37,8 @@ export function useDatasets() {
   const datasets: Ref<Dataset[] | undefined> = useObservable(from(liveQuery(() => db.datasets.toArray())))
   return datasets
 }
+
+export function useQuestions(dataset_id: number) {
+  const questions: Ref<Question[] | undefined> = useObservable(from(liveQuery(() => db.questions.where('dataset_id').equals(dataset_id).toArray())))
+  return questions
+}

@@ -1,9 +1,7 @@
 <template>
-  Dataset: {{ route.params.dataset_id  }}
+  <QuestionTable :dataset_id="parseInt($route.params.dataset_id as string)" />
 </template>
 
 <script setup lang="ts">
-import { useRoute } from 'vue-router'
-
-const route = useRoute()
+import QuestionTable from './components/QuestionTable.vue'
 </script>
