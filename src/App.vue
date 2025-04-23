@@ -50,11 +50,10 @@ const items = ref<MenuProps['items']>([
           </Col>
         </Row>
       </LayoutHeader>
-      <LayoutContent>
-        bbb
+      <LayoutContent style="padding: 24px 50px;">
+        <RouterView />
       </LayoutContent>
     </Layout>
-    <RouterView />
 
   </ConfigProvider>
 </template>
