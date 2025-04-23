@@ -69,13 +69,13 @@ function handleOk() {
   formRef.value?.validate().then((values) => {
     const dbPromise = props.dataset ?
       db.datasets.update(props.dataset.id, {
-        name: values.name!,
-        description: values.description!,
+        name: values.name!.trim(),
+        description: values.description!.trim(),
         ts: Date.now(),
       }) :
       db.datasets.add({
-        name: values.name!,
-        description: values.description!,
+        name: values.name!.trim(),
+        description: values.description!.trim(),
         ts: Date.now(),
         create_ts: Date.now(),
       })

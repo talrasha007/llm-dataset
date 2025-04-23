@@ -60,14 +60,14 @@ function handleOk() {
   formRef.value?.validate().then((values) => {
     const dbPromise = props.id ?
       db.questions.update(props.id, {
-        question: values.question,
-        answer: values.answer,
+        question: values.question.trim(),
+        answer: values.answer.trim(),
         ts: Date.now(),
       }) :
       db.questions.add({
         dataset_id: props.dataset_id,
-        question: values.question,
-        answer: values.answer,
+        question: values.question.trim(),
+        answer: values.answer.trim(),
         ts: Date.now(),
         create_ts: Date.now(),
       })
