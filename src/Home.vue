@@ -16,20 +16,17 @@
 </template>
 
 <script setup lang="ts">
-import { liveQuery } from "dexie"
-import { from } from 'rxjs'
-import { useObservable } from '@vueuse/rxjs'
-import { ref, type Ref } from 'vue'
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { Row, Col, Card } from 'ant-design-vue'
 
-import db, { type Dataset } from './db'
+import { useDatasets } from './db'
 
 import DatasetModal from './components/DatasetModal.vue'
 
 const router = useRouter()
 const showDatasetModal = ref(false)
-const datasets: Ref<Dataset[] | undefined> = useObservable(from(liveQuery(() => db.datasets.toArray())))
+const datasets = useDatasets()
 </script>
 
 <style lang="scss" scoped>
