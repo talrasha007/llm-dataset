@@ -68,9 +68,13 @@ const items = ref<MenuProps['items']>([
 .top-nav {
   color: white;
 
+  > * {
+    display: flex;
+    align-self: center;
+  }
+
   .logo {
     height: 30px;
-    margin-top: 17px;
   }
 }
 </style>
