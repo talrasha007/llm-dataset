@@ -8,7 +8,7 @@
     </Col>
     <Col span="6">
       <Card title="Add New Dataset" @click="showDatasetModal=true" class="card">
-        <p style="text-align: center;">+</p>
+        <p style="text-align: center;"><FileAddOutlined /></p>
       </Card>
     </Col>
   </Row>
@@ -19,6 +19,7 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { Row, Col, Card } from 'ant-design-vue'
+import { FileAddOutlined } from '@ant-design/icons-vue'
 
 import { useDatasets } from './db'
 
