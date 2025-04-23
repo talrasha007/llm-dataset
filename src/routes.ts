@@ -5,7 +5,7 @@ import Dataset from './Dataset.vue'
 
 const routes = [
   { path: '/', component: Home },
-  { path: '/dataset', component: Dataset },
+  { path: '/:dataset_id', component: Dataset },
 ]
 
 export const router = createRouter({

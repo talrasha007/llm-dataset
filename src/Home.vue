@@ -1,13 +1,13 @@
 
 <template>
   <Row :gutter="[16, 24]">
-    <Col span="6" v-for="ds of datasets">
+    <Col span="6" v-for="ds of datasets" class="card" @click="router.push(`/${ds.id!}`)">
       <Card :title="ds.name">
         <p>{{ ds.description }}</p>
       </Card>
     </Col>
     <Col span="6">
-      <Card title="Add New Dataset" @click="showDatasetModal=true" style="cursor: pointer;">
+      <Card title="Add New Dataset" @click="showDatasetModal=true" class="card">
         <p style="text-align: center;">+</p>
       </Card>
     </Col>
@@ -16,15 +16,24 @@
 </template>
 
 <script setup lang="ts">
-import { ref, type Ref } from 'vue'
 import { liveQuery } from "dexie"
-import { Row, Col, Card } from 'ant-design-vue'
-import db, { type Dataset } from './db'
 import { from } from 'rxjs'
 import { useObservable } from '@vueuse/rxjs'
+import { ref, type Ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { Row, Col, Card } from 'ant-design-vue'
+
+import db, { type Dataset } from './db'
 
 import DatasetModal from './components/DatasetModal.vue'
 
+const router = useRouter()
 const showDatasetModal = ref(false)
 const datasets: Ref<Dataset[] | undefined> = useObservable(from(liveQuery(() => db.datasets.toArray())))
 </script>
+
+<style lang="scss" scoped>
+.card {
+  cursor: pointer;
+}
+</style>
