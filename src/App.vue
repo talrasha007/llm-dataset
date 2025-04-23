@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { Layout, Row, Col, LayoutHeader, LayoutContent, Select, SelectOption, Menu, MenuItem, ConfigProvider } from 'ant-design-vue'
+import { Layout, Row, Col, LayoutHeader, LayoutContent, Select, SelectOption, Menu, ConfigProvider } from 'ant-design-vue'
 import { GithubFilled } from '@ant-design/icons-vue'
 
 import db, { useDatasets } from './db'
@@ -53,7 +53,7 @@ watch(() => route.path, async (path) => {
           </Col>
         </Row>
       </LayoutHeader>
-      <LayoutContent style="padding: 24px 50px;">
+      <LayoutContent style="padding: 24px 50px; background-color: #eee;">
         <RouterView />
       </LayoutContent>
     </Layout>
