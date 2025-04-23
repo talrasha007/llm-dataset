@@ -27,16 +27,27 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+import { ref, reactive, watch } from 'vue'
 import { Modal, Form, FormItem, Input } from 'ant-design-vue'
 import type { FormInstance } from 'ant-design-vue'
 
-import db from '../db'
+import db, { type Dataset } from '../db'
 
-defineProps<{
+const props = defineProps<{
   title: string;
   show: boolean;
+  dataset?: Dataset;
 }>()
+
+watch(() => props.dataset, (dataset) => {
+  if (dataset) {
+    formData.name = dataset.name
+    formData.description = dataset.description
+  } else {
+    formData.name = ''
+    formData.description = ''
+  }
+})
 
 const emit = defineEmits<{
   (e: 'update:show', show: boolean): void;
@@ -56,14 +67,22 @@ const formRef = ref<FormInstance>();
 
 function handleOk() {
   formRef.value?.validate().then((values) => {
-    db.datasets.add({
-      name: values.name!,
-      description: values.description!,
-      ts: Date.now(),
-      create_ts: Date.now(),
-    })
-    .then(() => emit('update:show', false))
-    .catch(() => alert('Dataset already exists'))    
+    const dbPromise = props.dataset ?
+      db.datasets.update(props.dataset.id, {
+        name: values.name!,
+        description: values.description!,
+        ts: Date.now(),
+      }) :
+      db.datasets.add({
+        name: values.name!,
+        description: values.description!,
+        ts: Date.now(),
+        create_ts: Date.now(),
+      })
+
+    dbPromise
+      .then(() => emit('update:show', false))
+      .catch(() => alert('Dataset already exists'))    
   }).catch(() => {});
 }
 </script>
