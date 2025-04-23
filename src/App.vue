@@ -2,7 +2,7 @@
 import { ref, h } from 'vue'
 import type { MenuProps } from 'ant-design-vue';
 import { Layout, Row, Col, LayoutHeader, LayoutContent, Menu, ConfigProvider } from 'ant-design-vue'
-import { FileAddOutlined, ApartmentOutlined, DatabaseOutlined } from '@ant-design/icons-vue'
+import { GithubFilled, FileAddOutlined, ApartmentOutlined, DatabaseOutlined } from '@ant-design/icons-vue'
 
 const items = ref<MenuProps['items']>([
   {
@@ -47,6 +47,12 @@ const items = ref<MenuProps['items']>([
               mode="horizontal"
               theme="dark"
             />
+          </Col>
+          <Col flex="auto" />
+          <Col flex="none">
+            <a style="color: white;" href="https://github.com/talrasha007/llm-dataset" target="_blank">
+              <GithubFilled style="font-size: 20px;" />
+            </a>
           </Col>
         </Row>
       </LayoutHeader>
