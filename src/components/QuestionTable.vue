@@ -1,5 +1,5 @@
 <template>
-  <Table :data-source="questions" :columns="columns" :pagination="false">
+  <Table :data-source="questions" :columns="columns" :pagination="false" bordered>
     <template #bodyCell="{ column, record }">
       <template v-if="column.key === 'actions'">
         <Space>
@@ -15,7 +15,7 @@
 
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-import { Table, Button, Space } from 'ant-design-vue'
+import { Table, Button, Space, type TableColumnType } from 'ant-design-vue'
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons-vue'
 
 import db, { useQuestions, type Question } from '../db'
@@ -38,7 +38,7 @@ function del(id: number) {
     db.questions.delete(id)
 }
 
-const columns = [
+const columns: TableColumnType[] = [
   {
     title: 'Question',
     dataIndex: 'question',
@@ -48,6 +48,23 @@ const columns = [
     title: 'Answer',
     dataIndex: 'answer',
     key: 'answer',
+    customCell: (record: Question, dataIndex: number | undefined) => {
+      if (dataIndex === undefined) return { }
+
+      if (record.answer === questions.value?.[dataIndex - 1]?.answer) {
+        return { rowSpan: 0 }
+      }
+
+      if (record.answer === questions.value?.[dataIndex + 1]?.answer) {
+        let i = 1
+        while (record.answer === questions.value?.[dataIndex + i]?.answer) {
+          i++
+        }
+        return { rowSpan: i }
+      }
+
+      return { }
+    }
   },
   {
     key: 'actions',
