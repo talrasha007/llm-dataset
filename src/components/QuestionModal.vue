@@ -27,15 +27,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+import { ref, reactive, watch } from 'vue'
 import { Modal, Form, FormItem, Input } from 'ant-design-vue'
 import type { FormInstance } from 'ant-design-vue'
 
-import db from '../db'
+import db, { type Question } from '../db'
 
 const props = defineProps<{
   id?: number;
   dataset_id: number;
+  question?: Question;
   show: boolean;
 }>()
 
@@ -76,4 +77,12 @@ function handleOk() {
       .catch(() => alert('Dataset already exists'))    
   }).catch(() => {});
 }
+
+watch(() => props.question, (question) => {
+  console.log('question', question)
+  if (question) {
+    formData.question = question.question
+    formData.answer = question.answer
+  }  
+})
 </script>
