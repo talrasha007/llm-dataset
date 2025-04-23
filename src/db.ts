@@ -1,6 +1,14 @@
-import Dexie, { type EntityTable } from 'dexie'
+import type { Ref } from 'vue'
+import { from } from 'rxjs'
+import { useObservable } from '@vueuse/rxjs'
 
-const db = new Dexie('dataset');
+import Dexie, { liveQuery, type EntityTable } from 'dexie'
+
+const db = new Dexie('dataset') as Dexie & {
+  datasets: EntityTable<Dataset, 'id'>;
+  questions: EntityTable<Question, 'id'>;
+};
+
 db.version(1).stores({
   datasets: '++id, &name, description, ts, create_ts',
   questions: '++id, *dataset_id, question, answer, ts, create_ts',
@@ -23,7 +31,9 @@ export interface Question {
   create_ts: number;
 }
 
-export default db as Dexie & {
-  datasets: EntityTable<Dataset, 'id'>;
-  questions: EntityTable<Question, 'id'>;
-};
+export default db;
+
+export function useDatasets() {
+  const datasets: Ref<Dataset[] | undefined> = useObservable(from(liveQuery(() => db.datasets.toArray())))
+  return datasets
+}
