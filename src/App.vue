@@ -1,52 +1,49 @@
 <script setup lang="ts">
-import { ref, h } from 'vue'
-import type { MenuProps } from 'ant-design-vue';
-import { Layout, Row, Col, LayoutHeader, LayoutContent, Menu, ConfigProvider } from 'ant-design-vue'
-import { GithubFilled, FileAddOutlined, ApartmentOutlined, DatabaseOutlined } from '@ant-design/icons-vue'
+import { ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { Layout, Row, Col, LayoutHeader, LayoutContent, Select, SelectOption, Menu, MenuItem, ConfigProvider } from 'ant-design-vue'
+import { GithubFilled } from '@ant-design/icons-vue'
 
-const items = ref<MenuProps['items']>([
-  {
-    key: 'add_dataset',
-    icon: () => h(FileAddOutlined),
-    label: h('a', { href: '#/add_dataset' }, 'ADD DATASET'),
-    disabled: true,
-  },
-  {
-    key: 'dataset',
-    icon: () => h(ApartmentOutlined),
-    label: 'DATASET',
-    children: [
-      {
-        key: 'dataset',
-        label: h('a', { href: '#/dataset' }, 'DATASET'),
-      },
-      {
-        key: 'dataset/table',
-        label: h('a', { href: '#/dataset/table' }, 'TABLE'),
-      },
-    ],
-  },
-  {
-    key: 'sync',
-    icon: () => h(DatabaseOutlined),
-    label: h('a', { href: '#/sync' }, 'SYNC')
-  },
-])
+import db, { useDatasets } from './db'
+
+const route = useRoute()
+const router = useRouter()
+const datasets = useDatasets()
+const currentDatasetName = ref('')
+watch(() => route.path, async (path) => {
+  if (path === '/') {
+    currentDatasetName.value = ''
+  } else {
+    const dataset = await db.datasets.get(parseInt(route.params.dataset_id as string))
+    currentDatasetName.value = dataset?.name || ''
+  }
+})
 </script>
 
 <template>
   <ConfigProvider>
     <Layout>
       <LayoutHeader>
-        <Row class="top-nav">
-          <Col flex="none"><img src="/favicon.svg" class="logo" /></Col>
+        <Row class="top-nav" :gutter="16">
+          <Col flex="none"><RouterLink to="/" style="display: flex; align-items: center;"><img src="/favicon.svg" class="logo" /></RouterLink></Col>
+          <Col flex="none" v-if="currentDatasetName">
+            <Select
+              v-model:value="currentDatasetName"
+              theme="dark"
+              placeholder="Select Dataset"
+              style="width: 200px;"
+              @change="(val) => router.push(`/${val}`)"
+            >
+              <SelectOption v-for="dataset in datasets" :key="dataset.id" :value="dataset.id">{{ dataset.name }}</SelectOption>
+            </Select>
+          </Col>
           <Col flex="none">
             <Menu
               :selectedKeys="[]"
-              :items="items"
               mode="horizontal"
               theme="dark"
-            />
+            >
+            </Menu>
           </Col>
           <Col flex="auto" />
           <Col flex="none">
@@ -75,6 +72,7 @@ const items = ref<MenuProps['items']>([
 
   .logo {
     height: 30px;
+    cursor: pointer;
   }
 }
 </style>
