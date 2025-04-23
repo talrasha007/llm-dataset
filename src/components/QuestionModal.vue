@@ -79,7 +79,6 @@ function handleOk() {
 }
 
 watch(() => props.question, (question) => {
-  console.log('question', question)
   if (question) {
     formData.question = question.question
     formData.answer = question.answer
