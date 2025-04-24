@@ -43,16 +43,7 @@
 import { ref, reactive } from 'vue'
 import { Space, Button, Select, SelectOption, Modal, Form, FormItem, Input, type FormInstance } from 'ant-design-vue'
 
-import { updateDbSrc } from '../db'
-
-interface DBSource {
-  name: string;
-  url: string;
-  active?: boolean;
-}
-const dbSource = ref(JSON.parse(localStorage.getItem('dbSource') || '[{"name": "local", "url": ""}]') as DBSource[])
-const dbUrl = ref(dbSource.value.find(v => v.active)?.url || dbSource.value[0].url)
-updateDbSrc(dbUrl.value)
+import { dbSource, dbUrl } from '../db'
 
 interface FormData {
   url: string;

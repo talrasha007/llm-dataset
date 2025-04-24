@@ -1,5 +1,5 @@
 import md5 from 'crypto-js/md5'
-import type { Ref } from 'vue'
+import { ref, type Ref } from 'vue'
 import { from } from 'rxjs'
 import { useObservable } from '@vueuse/rxjs'
 
@@ -50,11 +50,17 @@ export function useQuestions(dataset_id: string) {
   return questions
 }
 
-export function updateDbSrc(url: string) {
-  if (url) {
-    db.cloud.configure({
-      databaseUrl: url,
-      requireAuth: true
-    });
-  }
+interface DBSource {
+  name: string;
+  url: string;
+  active?: boolean;
+}
+export const dbSource = ref(JSON.parse(localStorage.getItem('dbSource') || '[{"name": "local", "url": ""}]') as DBSource[])
+export const dbUrl = ref(dbSource.value.find(v => v.active)?.url || dbSource.value[0].url)
+
+if (dbUrl.value) {
+  db.cloud.configure({
+    databaseUrl: dbUrl.value,
+    requireAuth: true
+  });
 }
