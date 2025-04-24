@@ -1,5 +1,6 @@
 
 <template>
+  <DBSource />
   <Row :gutter="[16, 24]">
     <Col span="6" v-for="ds of datasets" class="card" @click="router.push(`/${ds.id!}`)">
       <Card :title="ds.name">
@@ -33,6 +34,7 @@ import { FileAddOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons
 
 import db, { useDatasets, type Dataset } from './db'
 
+import DBSource from './components/DBSource.vue'
 import DatasetModal from './components/DatasetModal.vue'
 
 const router = useRouter()

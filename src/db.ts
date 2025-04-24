@@ -16,11 +16,6 @@ db.version(1).stores({
   questions: '@id, dataset_id, answer_key, ts, create_ts',
 });
 
-// db.cloud.configure({
-//   databaseUrl: "url",
-//   requireAuth: true // (optional. Block DB until authenticated)
-// });
-
 export interface Dataset {
   id?: string;
   name: string;
@@ -53,4 +48,13 @@ export function useDatasets() {
 export function useQuestions(dataset_id: string) {
   const questions: Ref<Question[] | undefined> = useObservable(from(liveQuery(() => db.questions.where('dataset_id').equals(dataset_id).toArray())))
   return questions
+}
+
+export function updateDbSrc(url: string) {
+  if (url) {
+    db.cloud.configure({
+      databaseUrl: url,
+      requireAuth: true
+    });
+  }
 }
