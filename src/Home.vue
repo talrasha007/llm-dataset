@@ -40,7 +40,7 @@ const modalDs = ref<Dataset | undefined>()
 const showDatasetModal = ref(false)
 const datasets = useDatasets()
 
-async function del(id: number, event: MouseEvent) {
+async function del(id: string, event: MouseEvent) {
   event.stopPropagation()
 
   if (confirm('Are you sure?'))

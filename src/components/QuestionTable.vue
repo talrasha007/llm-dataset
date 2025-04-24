@@ -10,7 +10,7 @@
     </template>
   </Table>
 
-  <QuestionModal v-model:show="show" :question="question" :id="question?.id" :dataset_id="parseInt($route.params.dataset_id as string)" />
+  <QuestionModal v-model:show="show" :question="question" :id="question?.id" :dataset_id="$route.params.dataset_id as string" />
 </template>
 
 <script setup lang="ts">
@@ -22,7 +22,7 @@ import db, { useQuestions, type Question } from '../db'
 import QuestionModal from './QuestionModal.vue'
 
 const props= defineProps<{
-  dataset_id: number;
+  dataset_id: string;
 }>()
 
 const show = ref(false)
@@ -33,7 +33,7 @@ watch(() => props.dataset_id, () => {
   questions = useQuestions(props.dataset_id)
 })
 
-function del(id: number) {
+function del(id: string) {
   if (confirm('Are you sure to delete this question?'))
     db.questions.delete(id)
 }

@@ -1,21 +1,28 @@
+import md5 from 'crypto-js/md5'
 import type { Ref } from 'vue'
 import { from } from 'rxjs'
 import { useObservable } from '@vueuse/rxjs'
 
 import Dexie, { liveQuery, type EntityTable } from 'dexie'
+import dexieCloud from "dexie-cloud-addon";
 
-const db = new Dexie('dataset') as Dexie & {
+const db = new Dexie('dataset', {addons: [dexieCloud]}) as Dexie & {
   datasets: EntityTable<Dataset, 'id'>;
   questions: EntityTable<Question, 'id'>;
 };
 
 db.version(1).stores({
-  datasets: '++id, &name, description, ts, create_ts',
-  questions: '++id, *dataset_id, question, answer, ts, create_ts',
+  datasets: '@id, &name, ts, create_ts',
+  questions: '@id, dataset_id, answer_key, ts, create_ts',
 });
 
+// db.cloud.configure({
+//   databaseUrl: "url",
+//   requireAuth: true // (optional. Block DB until authenticated)
+// });
+
 export interface Dataset {
-  id?: number;
+  id?: string;
   name: string;
   description: string;
   ts: number;
@@ -23,13 +30,18 @@ export interface Dataset {
 }
 
 export interface Question {
-  id?: number;
-  dataset_id: number;
+  id?: string;
+  dataset_id: string;
   question: string;
   answer: string;
+  answer_key?: string;
   ts: number;
   create_ts: number;
 }
+
+db.questions.hook('creating', (_, question) => {
+  question.answer_key = md5(question.answer).toString()
+})
 
 export default db;
 
@@ -38,7 +50,7 @@ export function useDatasets() {
   return datasets
 }
 
-export function useQuestions(dataset_id: number) {
+export function useQuestions(dataset_id: string) {
   const questions: Ref<Question[] | undefined> = useObservable(from(liveQuery(() => db.questions.where('dataset_id').equals(dataset_id).toArray())))
   return questions
 }

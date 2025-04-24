@@ -6,8 +6,8 @@
     </Col>
   </Row>
   <br />
-  <QuestionTable :dataset_id="parseInt($route.params.dataset_id as string)" />
-  <QuestionModal v-model:show="show" :dataset_id="parseInt($route.params.dataset_id as string)" />
+  <QuestionTable :dataset_id="$route.params.dataset_id as string" />
+  <QuestionModal v-model:show="show" :dataset_id="$route.params.dataset_id as string" />
 </template>
 
 <script setup lang="ts">

@@ -12,11 +12,14 @@
     "@ant-design/icons-vue": "^7.0.1",
     "@vueuse/rxjs": "^13.1.0",
     "ant-design-vue": "^4.2.6",
+    "crypto-js": "^4.2.0",
     "dexie": "^4.0.11",
+    "dexie-cloud-addon": "^4.0.11",
     "vue": "^3.5.13",
     "vue-router": "^4.5.0"
   },
   "devDependencies": {
+    "@types/crypto-js": "^4.2.2",
     "@vitejs/plugin-vue": "^5.2.2",
     "@vue/tsconfig": "^0.7.0",
     "sass-embedded": "^1.87.0",

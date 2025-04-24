@@ -14,7 +14,7 @@ watch(() => route.path, async (path) => {
   if (path === '/') {
     currentDatasetName.value = ''
   } else {
-    const dataset = await db.datasets.get(parseInt(route.params.dataset_id as string))
+    const dataset = await db.datasets.get(route.params.dataset_id as string)
     currentDatasetName.value = dataset?.name || ''
   }
 })

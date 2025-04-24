@@ -34,8 +34,8 @@ import type { FormInstance } from 'ant-design-vue'
 import db, { type Question } from '../db'
 
 const props = defineProps<{
-  id?: number;
-  dataset_id: number;
+  id?: string;
+  dataset_id: string;
   question?: Question;
   show: boolean;
 }>()
